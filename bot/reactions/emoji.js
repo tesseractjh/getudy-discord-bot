@@ -1,0 +1,82 @@
+const dotenv = require('dotenv');
+dotenv.config({ path: 'variables.env' });
+
+const condition = (options, message, words) => {
+  const { type, start, end } = options;
+  let starts = start, ends = end;
+  if (typeof start === 'string') starts = [start];
+  if (typeof end === 'string') ends = [end];
+  if (start.length && !starts.some(word => message.content.startsWith(word))) return false;
+  if (end.length && !ends.some(word => message.content.endsWith(word))) return false;
+  switch (type) {
+    // 단어 목록(words) 중 한 개 이상 포함될 때
+    case 'SINGLE':
+      return words.some(word => message.content.includes(word));
+    // 단어 목록 중 min개 이상 포함될 때
+    case 'PLURAL': {
+      const { min } = options;
+      return words.filter(word => message.content.includes(word)).length >= min;
+    }
+    // fixed 목록의 모든 단어가 반드시 포함되고, 단어 목록 중 min개 이상 포함될 때
+    case 'PLURAL_FIXED': {
+      const { min, fixed } = options;
+      return fixed.every(word => message.content.includes(word))
+        && words.filter(word => message.content.includes(word)).length >= min;
+    }
+    // 단어 목록 중 하나와 정확히 일치할 때
+    case 'EXACT':
+      return words.some(word => message.content === word);
+    default: throw new Error('react 타입이 잘못됨');
+  }
+};
+
+const getReact = (message, options) => {
+  return (word, emoji, probability = 1) => {
+    let words = word, emojis = emoji;
+    if (typeof word === 'string') words = [word];
+    if (typeof emoji === 'string') emojis = [emoji];
+    if (condition(options, message, words)) {
+      if (probability < Math.random()) return;
+      [...emojis[Math.floor(Math.random() * emojis.length)]]
+        .forEach(emoji => message.react(emoji));
+    }
+  };
+};
+
+const setType = (options) => {
+  const { min, fixed, isExact } = options;
+  let type = 'SINGLE';
+  if (min > 1) {
+    if (fixed?.length) {
+      type = 'PLURAL_FIXED';
+    } else {
+      type = 'PLURAL';
+    }
+  } else if (isExact) {
+    type = 'EXACT';
+  }
+  options.type = type;
+};
+
+const react = (message, rule) => {
+  const { word, emoji, probability, options } = rule;
+  setType(options);
+  getReact(message, options)(word, emoji, probability);
+};
+
+const copyEmoji = (message, probability) => {
+  const isEmoji = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
+  [...new Set(message.content.match(isEmoji))]
+    .forEach(emoji => {
+      if (!/[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9\x20]/g.test(emoji)) {
+        if (probability >= Math.random()) {
+          message.react(emoji);
+        }
+      }
+    });
+};
+
+module.exports = (message, emojiRules) => {
+  copyEmoji(message, 0.2);
+  emojiRules.forEach(rule => react(message, rule));
+};

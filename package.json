@@ -1,0 +1,21 @@
+{
+  "name": "getudy-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node botServer.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/builders": "^0.11.0",
+    "@discordjs/rest": "^0.3.0",
+    "cheerio": "*",
+    "discord-api-types": "^0.26.1",
+    "discord.js": "^13.6.0",
+    "dotenv": "^15.0.0",
+    "mongoose": "^6.1.9",
+    "node-fetch": "^2.6.7"
+  }
+}
