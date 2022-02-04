@@ -69,6 +69,6 @@ const copyEmoji = (message, probability) => {
 };
 
 module.exports = (message, emojiRules) => {
-  copyEmoji(message, 0.2);
+  copyEmoji(message, 0.1);
   emojiRules.forEach(rule => react(message, rule));
 };
