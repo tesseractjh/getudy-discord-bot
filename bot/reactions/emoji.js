@@ -2,12 +2,14 @@ const dotenv = require('dotenv');
 dotenv.config({ path: 'variables.env' });
 
 const condition = (options, message, words) => {
-  const { type, start, end } = options;
-  let starts = start, ends = end;
+  const { type, start, end, fixed } = options;
+  let starts = start, ends = end, fixeds = fixed;
   if (typeof start === 'string') starts = [start];
   if (typeof end === 'string') ends = [end];
-  if (start.length && !starts.some(word => message.content.startsWith(word))) return false;
-  if (end.length && !ends.some(word => message.content.endsWith(word))) return false;
+  if (typeof fixed === 'string') fixeds = [fixed];
+  if (starts.length && !starts.some(word => message.content.startsWith(word))) return false;
+  if (ends.length && !ends.some(word => message.content.endsWith(word))) return false;
+  if (fixeds.length && !fixeds.every(word => message.content.includes(word))) return false;
   switch (type) {
     // 단어 목록(words) 중 한 개 이상 포함될 때
     case 'SINGLE':
@@ -16,12 +18,6 @@ const condition = (options, message, words) => {
     case 'PLURAL': {
       const { min } = options;
       return words.filter(word => message.content.includes(word)).length >= min;
-    }
-    // fixed 목록의 모든 단어가 반드시 포함되고, 단어 목록 중 min개 이상 포함될 때
-    case 'PLURAL_FIXED': {
-      const { min, fixed } = options;
-      return fixed.every(word => message.content.includes(word))
-        && words.filter(word => message.content.includes(word)).length >= min;
     }
     // 단어 목록 중 하나와 정확히 일치할 때
     case 'EXACT':
@@ -44,16 +40,12 @@ const getReact = (message, options) => {
 };
 
 const setType = (options) => {
-  const { min, fixed, isExact } = options;
+  const { min, isExact } = options;
   let type = 'SINGLE';
-  if (min > 1) {
-    if (fixed?.length) {
-      type = 'PLURAL_FIXED';
-    } else {
-      type = 'PLURAL';
-    }
-  } else if (isExact) {
+  if (isExact) {
     type = 'EXACT';
+  } else if (min > 1) {
+    type = 'PLURAL';
   }
   options.type = type;
 };
