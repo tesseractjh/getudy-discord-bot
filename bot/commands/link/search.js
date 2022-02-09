@@ -1,4 +1,5 @@
 const Link = require('../../schemas/Link');
+const fs = require('fs');
 
 module.exports = async (message, keywords = [], options = {}) => {
   try {
@@ -7,12 +8,14 @@ module.exports = async (message, keywords = [], options = {}) => {
     if (options['포함']) {
       regex = new RegExp(text.map(word => `(?=.*${word})`).join(''));
     }
-    const links = await Link.find({ keywords: { $regex: regex, $options: 'i' } }, 'link keywords');
-    const output = links.map(({ link, keywords }, i) => {
-      if (keywords.length < 2) {
+    const links = await Link
+      .find({ keywords: { $regex: regex, $options: 'i' } }, 'title link')
+      .sort({ createdAt: -1 });
+    const output = links.map(({ title, link }, i) => {
+      if (title === link) {
         return `[${i + 1}] <${link}>`;
       } else {
-        return `[${i + 1}] ${keywords.find(key => key !== link)}\n<${link}>`;
+        return `[${i + 1}] ${title}\n<${link}>`;
       }
     }).join('\n\n')
     if (output) {

@@ -58,7 +58,7 @@ const react = (message, rule) => {
 
 const copyEmoji = (message, probability) => {
   const isEmoji = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
-  [...new Set(message.content.match(isEmoji))]
+  [...new Set(message.content.trim().match(isEmoji))]
     .forEach(emoji => {
       if (!/[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9\x20]/g.test(emoji)) {
         if (probability >= Math.random()) {
