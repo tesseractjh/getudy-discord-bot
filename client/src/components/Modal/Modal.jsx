@@ -1,6 +1,7 @@
 import { useCallback, useContext } from 'react';
 import styled from 'styled-components';
 import { LinkDispatch, EmojiDispatch, ModalDispatch } from '../../pages/Home';
+import EmojiInfo from '../Info/EmojiInfo';
 
 const Background = styled.div`
   position: fixed;
@@ -112,20 +113,39 @@ const Modal = ({ page }) => {
       dispatch = useContext(EmojiDispatch).dispatchEmoji;
       break;
   }
-  const { modal: { type, dataId }, dispatchModal } = useContext(ModalDispatch);
+  const { modal: { type, window, dataId, register }, dispatchModal } = useContext(ModalDispatch);
+  const closeAllModal = useCallback(() =>  {
+    dispatchModal({ type: 'CLOSE' });
+  }, []);
   const closeModal = useCallback(() => {
-    dispatchModal({ type: 'SET', value: false });
+    if (register) {
+      dispatchModal({ type: 'CLOSE_WINDOW' });
+    } else {
+      dispatchModal({ type: 'CLOSE' });
+    }
   }, []);
   const refreshModal = useCallback(() => {
-    dispatchModal({ type: 'SET', value: false });
+    dispatchModal({ type: 'CLOSE' });
+    if (register) {
+      dispatchModal({ type: 'CLOSE_REGISTER' });
+    }
     fetch(`/api/${page}`)
       .then(res => res.json())
       .then(json => dispatch({ type: 'GET', json }));
   }, []);
   return (
     <>
-      <Background onClick={closeModal} />
       {
+        register && 
+        <>
+          <Background onClick={closeAllModal} />
+          <EmojiInfo data={{ _id: dataId }} isRegister />
+        </>
+      }
+      {
+        window && <Background onClick={closeAllModal} />
+      }
+      { window &&
         (() => {
           switch (type) {
             case 'DELETE': 
@@ -142,8 +162,6 @@ const Modal = ({ page }) => {
               return <ModalWindow closeModal={refreshModal}>성공적으로 처리되었습니다!</ModalWindow>;
             case 'FAIL':
               return <ModalWindow closeModal={refreshModal}>오류가 발생하여 요청하신 작업이 처리되지 않았습니다!</ModalWindow>;
-            case 'ADD_EMOJI':
-              return;
             default:
               return;
           }

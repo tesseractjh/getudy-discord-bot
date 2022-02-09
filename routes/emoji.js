@@ -10,6 +10,17 @@ router.get('/emoji', async (req, res) => {
   res.json(data);
 });
 
+router.post('/emoji', async (req, res) => {
+  try {
+    const { word, emoji, probability, options } = req.body;
+    await new Emoji({ word, emoji, probability, options }).save();
+    res.send('success');
+  } catch (err) {
+    console.log(err);
+    res.send('fail');
+  }
+});
+
 router.put('/emoji', async (req, res) => {
   try {
     const { _id, word, emoji, probability, options } = req.body;

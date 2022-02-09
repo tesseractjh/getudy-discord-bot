@@ -138,7 +138,7 @@ export const getNewData = (collected, id) => {
 };
 
 const isValidProbability = prob => {
-  return typeof prob === 'number' && prob > 0 && prob <= 1;
+  return typeof prob === 'number' && !Number.isNaN(prob) && prob > 0 && prob <= 1;
 };
 
 const isValidMin = min => {
@@ -152,11 +152,11 @@ export const isValidData = ({ word, emoji, probability, options: { min, isExact 
       && emoji.length
     )
   ) {
-    if (probability === 0) return 'INVALID_REQ';
+    if (probability === 0 || Number.isNaN(probability)) return 'INVALID_REQ';
     else if (isValidProbability(probability)) return 'INVALID_PROB';
     else return 'INVALID_REQ';
   }
-  if (probability === 0) return 'INVALID_PROB';
+  if (probability === 0 || Number.isNaN(probability)) return 'INVALID_PROB';
   if (!isExact) {
     if (!isValidMin(min)) return 'INVALID_MIN';
     if (min > word.length) return 'INVALID_MIN_VALUE';

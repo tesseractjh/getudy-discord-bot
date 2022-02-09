@@ -19,9 +19,17 @@ const fadeIn = keyframes`
 
 const Form = styled.form`
   flex: 1;
+  position: ${({ isRegister }) => isRegister ? 'fixed' : 'static'};
+  top: ${({ isRegister }) => isRegister ? '50%' : 0};
+  left: ${({ isRegister }) => isRegister ? '50%' : 0};
+  transform: ${({ isRegister }) => isRegister ? 'translate(-50%, -50%)' : 'none'};
+  width: ${({ isRegister }) => isRegister ? '100vw' : 'auto'};
+  max-width: ${({ isRegister }) => isRegister ? '1024px' : 'auto'};
+  padding: ${({ isRegister }) => isRegister ? '40px' : 0};
   margin: 10px 0;
-  border-top: 1px solid var(--color-red);
-  animation: ${fadeIn} .2s;
+  border-top: ${({ isRegister }) => isRegister ? 'none' : `1px solid var(--color-red)`};
+  background-color: ${({ isRegister }) => isRegister ? 'var(--color-white)' : 'none'};
+  animation: ${fadeIn} ${({ isRegister }) => isRegister ? 0 : '.2s'};
 `;
 
 const ListItem = styled.li`
@@ -128,27 +136,31 @@ const WordContent = Content(Textarea, 'word');
 const ExactContent = Content(Textarea, 'exact');
 const ProbContent = Content(Textarea, 'prob');
 
-const EmojiInfo = ({ data }) => {
+const EmojiInfo = ({ data, isRegister }) => {
   const { dispatchModal } = useContext(ModalDispatch);
   const list = useRef();
   const disabled = 0;
+
   const handleSuccess = useCallback(() => {
     dispatchModal({ type: 'SET', value: 'SUCCESS' });
   }, []);
+
   const handleFail = useCallback(() => {
     dispatchModal({ type: 'SET', value: 'FAIL' });
   }, []);
+
   const handleInvalid = useCallback((validation) => {
     dispatchModal({ type: 'SET', value: validation });
   }, []);
 
-  const handleEdit = useCallback(async () => {
+  const handleEdit = useCallback((method = 'PUT') => async () => {
     const collected = findAllElements(list.current, 'textarea');
     const newData = getNewData(collected, data['_id']);
     const validation = isValidData(newData);
+    console.log(newData);
     if (validation === 'VALID') {
       const res = await fetch('/api/emoji', {
-        method: 'PUT',
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newData)
       });
@@ -169,48 +181,58 @@ const EmojiInfo = ({ data }) => {
   }, []);
   
   return (
-    <Form>
+    <Form isRegister={isRegister}>
       <ul ref={list}>
         <ListItem>
           <Title htmlFor={`emoji${data['_id']}`}>이모지</Title>
-          <EmojiContent disabled={disabled} id={data['_id']} data={data.emoji} />
+          <EmojiContent disabled={disabled} id={data['_id']} data={data?.emoji} />
         </ListItem>
         <ListItem>
           <Title htmlFor={`start${data['_id']}`}>시작</Title>
-          <StartContent disabled={disabled} id={data['_id']} data={data.options.start ?? ''} />
+          <StartContent disabled={disabled} id={data['_id']} data={data?.options?.start} />
         </ListItem>
         <ListItem>
           <Title htmlFor={`end${data['_id']}`}>끝</Title>
-          <EndContent disabled={disabled} id={data['_id']} data={data.options.end ?? ''} />
+          <EndContent disabled={disabled} id={data['_id']} data={data?.options?.end} />
         </ListItem>
         <ListItem>
           <Title htmlFor={`fixed${data['_id']}`}>반드시 포함</Title>
-          <FixedContent disabled={disabled} id={data['_id']} data={data.options.fixed} />
+          <FixedContent disabled={disabled} id={data['_id']} data={data?.options?.fixed} />
         </ListItem>
         <ListItem>
           <Title htmlFor={`word${data['_id']}`}>
-            <MinContent disabled={disabled} flex="0.5" align="right" bold id={data['_id']} data={data.options.min ?? 1} />
+            <MinContent disabled={disabled} flex="0.5" align="right" bold id={data['_id']} data={data?.options?.min ?? 1} />
             개 이상 포함
           </Title>
-          <WordContent disabled={disabled} id={data['_id']} data={data.options.isExact ? '' : data.word} />
+          <WordContent disabled={disabled} id={data['_id']} data={data?.options?.isExact ? '' : data?.word} />
         </ListItem>
         <ListItem>
           <Title htmlFor={`exact${data['_id']}`}>정확히 일치</Title>
-          <ExactContent id={data['_id']} data={data.options.isExact ? data.word : ''} />
+          <ExactContent id={data['_id']} data={data?.options?.isExact ? data?.word : ''} />
         </ListItem>
         <ListItem>
           <Title htmlFor={`exact${data['_id']}`}>확률</Title>
-          <ProbContent id={data['_id']} data={data.probability * 100} />
+          <ProbContent id={data['_id']} data={Number.isNaN(data?.probability * 100) ? '' : data.probability * 100} />
         </ListItem>
         <ListItem justify="flex-end">
-          <EditButton type="button" onClick={handleEdit}>
-            <Icon as={EditIcon} />
-            수정
-          </EditButton>
-          <DeleteButton type="button" onClick={handleDelete}>
-            <Icon as={DeleteIcon} />
-            삭제
-          </DeleteButton>
+          {
+            isRegister
+              ? <EditButton type="button" onClick={handleEdit('POST')}>
+                <Icon as={EditIcon} />
+                추가
+              </EditButton>
+              : <>
+                <EditButton type="button" onClick={handleEdit()}>
+                  <Icon as={EditIcon} />
+                  수정
+                  </EditButton>
+                <DeleteButton type="button" onClick={handleDelete}>
+                  <Icon as={DeleteIcon} />
+                  삭제
+                </DeleteButton>
+              </>
+          }
+          
         </ListItem>
       </ul>
     </Form>

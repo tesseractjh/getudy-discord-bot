@@ -79,7 +79,15 @@ const emojiReducer = (state, action) => {
 const modalReducer = (state, action) => {
   switch (action.type) {
     case 'SET':
-      return { ...state, type: action.value };
+      return { ...state, type: action.value, window: true };
+    case 'CLOSE':
+      return { ...state, type: false }
+    case 'CLOSE_WINDOW':
+      return { ...state, window: false }
+    case 'REGISTER':
+      return { ...state, type: true, window: false, register: true };
+    case 'CLOSE_REGISTER':
+      return { ...state, type: false, window: false, register: false };
     case 'DATA_ID':
       return { ...state, dataId: action.value };
     default:
@@ -94,7 +102,7 @@ export const ModalDispatch = React.createContext(null);
 const Home = () => {
   const [linkData, dispatchLink] = useReducer(linkReducer);
   const [emojiData, dispatchEmoji] = useReducer(emojiReducer);
-  const [modal, dispatchModal] = useReducer(modalReducer, { type: false });
+  const [modal, dispatchModal] = useReducer(modalReducer, {});
   const [page, setPage] = useState('link');
 
   return (

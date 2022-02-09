@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 import SearchIcon from '../assets/images/search.svg';
 import PlusIcon from '../assets/images/plus-circle-fill.svg';
-import { LinkDispatch, EmojiDispatch } from '../pages/Home';
+import { LinkDispatch, EmojiDispatch, ModalDispatch } from '../pages/Home';
 
 const SearchContainer = styled.form`
   position: relative;
@@ -67,6 +67,10 @@ const SearchInput = React.memo(({ page }) => {
 });
 
 const SearchBar = ({ page }) => {
+  const { dispatchModal } = useContext(ModalDispatch);
+  const handleRegister = useCallback(() => {
+    dispatchModal({ type: 'REGISTER' });
+  }, []);
   return (
     <SearchContainer>
       <SearchIcon style={searchIconStyle} />
@@ -74,11 +78,10 @@ const SearchBar = ({ page }) => {
       <SearchInput page={page} />
       {
         page === 'emoji' &&
-        <Button type="button">
+        <Button type="button" onClick={handleRegister}>
           <PlusIcon style={plusIconStyle} />
         </Button>
       }
-      
     </SearchContainer>
   );
 };
