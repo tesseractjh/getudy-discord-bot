@@ -66,10 +66,10 @@ const YesButton = styled.button`
   }
 `;
 
-const ModalWindow = ({ confirm, closeModal, dataId, children }) => {
+const ModalWindow = ({ confirm, closeModal, dataId, page, children }) => {
   const { dispatchModal } = useContext(ModalDispatch);
-  const deleteLink = useCallback(async () => {
-    const res = await fetch(`/api/link/${dataId}`, {
+  const deleteData = useCallback(async () => {
+    const res = await fetch(`/api/${page}/${dataId}`, {
       method: 'DELETE'
     });
     const result = await res.text();
@@ -92,7 +92,7 @@ const ModalWindow = ({ confirm, closeModal, dataId, children }) => {
             </ButtonItem>
           }
           <ButtonItem>
-            <YesButton onClick={confirm ? deleteLink : closeModal}>
+            <YesButton onClick={confirm ? deleteData : closeModal}>
               {confirm ? '예' : '확인'}
             </YesButton>
           </ButtonItem>
@@ -129,7 +129,7 @@ const Modal = ({ page }) => {
         (() => {
           switch (type) {
             case 'DELETE': 
-              return <ModalWindow closeModal={closeModal} dataId={dataId} confirm>정말로 삭제하시겠습니까?</ModalWindow>;
+              return <ModalWindow closeModal={closeModal} dataId={dataId} page={page} confirm>정말로 삭제하시겠습니까?</ModalWindow>;
             case 'INVALID_REQ':
               return <ModalWindow closeModal={closeModal}>이모지, ~개 이상 포함, 확률은 필수사항입니다!</ModalWindow>;
             case 'INVALID_PROB':

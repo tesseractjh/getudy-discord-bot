@@ -164,7 +164,8 @@ const EmojiInfo = ({ data }) => {
   }, []);
 
   const handleDelete = useCallback(async () => {
-
+    dispatchModal({ type: 'DATA_ID', value: data['_id'] });
+    dispatchModal({ type: 'SET', value: 'DELETE' });
   }, []);
   
   return (

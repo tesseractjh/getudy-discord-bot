@@ -21,4 +21,15 @@ router.put('/emoji', async (req, res) => {
   }
 });
 
+router.delete('/emoji/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Emoji.findOneAndRemove({ _id: id });
+    res.send('success');
+  } catch (err) {
+    console.log(err);
+    res.send('fail');
+  }
+});
+
 module.exports = router;
