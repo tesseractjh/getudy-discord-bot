@@ -4,7 +4,8 @@ const { Schema } = mongoose;
 
 const Link = new Schema(
   {
-    link: { type: String, unique: true },
+    title: String,
+    link: { type: String, index: true, unique: true },
     keywords: [String]
   },
   {
