@@ -111,7 +111,6 @@ const LinkData = ({ flexArr, data, index, detailed, setDetailed, handleDelete })
 
 const EmojiData = ({ flexArr, data, index, detailed, setDetailed }) => {
   const { emoji, probability, isHidden } = data;
-  if (index === 15) console.log(data);
   const condition = useMemo(() => getCondition(data, Accent), [data]);
   return (
     <>
