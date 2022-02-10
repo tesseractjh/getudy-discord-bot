@@ -29,6 +29,7 @@ const Data = styled.td`
   display: ${({ flexCenter }) => flexCenter ? 'flex' : 'block'};
   justify-content: center;
   height: ${({ height }) => height ?? '30px'};
+  min-height: 30px;
   padding: ${({ padding }) => padding ?? 0};
   font-size: 20px;
   line-height: 30px;
@@ -114,7 +115,7 @@ const EmojiData = ({ flexArr, data, index, detailed, setDetailed }) => {
   return (
     <>
       <Data flex={1}>{index}</Data>
-      <Data flex={flexArr[0]}>{emoji.join('')}</Data>
+      <Data flex={flexArr[0]} height="auto">{emoji.join('')}</Data>
       <Data flex={flexArr[1]} height="auto" align="left" padding="0 10px">{condition}</Data>
       <Data flex={flexArr[2]} isRed={probability === 1}>{`${probability * 100}%`}</Data>
       <Data flex={1} flexCenter>
