@@ -56,16 +56,24 @@ const react = (message, rule) => {
   getReact(message, options)(word, emoji, probability);
 };
 
-const copyEmoji = (message, probability) => {
+const copyEmoji = async (message, probability) => {
   const isEmoji = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
-  [...new Set(message.content.trim().match(isEmoji))]
-    .forEach(emoji => {
+  try {
+    const emojis = [...new Set(message.content.trim().match(isEmoji))]
+    for (const emoji of emojis) {
       if (!/[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9\x20]/g.test(emoji)) {
         if (probability >= Math.random()) {
-          message.react(emoji);
+          await message.react(emoji);
         }
       }
-    });
+    }
+  } catch (err) {
+    console.log(
+      err.toString().split(/\s+/).find(word =>/Error:$/.test(word)),
+      `오류를 일으킨 메시지: ${message.content}`,
+      `오류가 일어난 시간: ${new Date().toString()}`
+    )
+  }
 };
 
 module.exports = (message, emojiRules) => {
