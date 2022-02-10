@@ -147,19 +147,17 @@ const isValidMin = min => {
   return Number.isInteger(min) && min > 0 && min <= 99;
 };
 
-export const isValidData = ({ word, emoji, probability, options: { min, isExact } }) => {
-  if (
-    !(
-      word.length 
-      && emoji.length
-    )
-  ) {
-    if (probability === 0 || Number.isNaN(probability)) return 'INVALID_REQ';
-    else if (isValidProbability(probability)) return 'INVALID_PROB';
-    else return 'INVALID_REQ';
-  }
-  if (probability === 0 || Number.isNaN(probability)) return 'INVALID_PROB';
-  if (!isExact) {
+export const isValidData = ({ word, emoji, probability, options: { min, fixed, isExact } }) => {
+  if (isExact || fixed.length) {
+    if (!emoji.length || probability === 0) return 'INVALID_REQ2';
+    if (probability === 0 || Number.isNaN(probability)) return 'INVALID_PROB';
+    if (!isExact && word.length) {
+      if (!isValidMin(min)) return 'INVALID_MIN';
+      if (min > word.length) return 'INVALID_MIN_VALUE';
+    }
+  } else {
+    if (!emoji.length || !word.length || probability === 0) return 'INVALID_REQ';
+    if (probability === 0 || Number.isNaN(probability)) return 'INVALID_PROB';
     if (!isValidMin(min)) return 'INVALID_MIN';
     if (min > word.length) return 'INVALID_MIN_VALUE';
   }
