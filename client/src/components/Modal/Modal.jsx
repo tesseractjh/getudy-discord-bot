@@ -23,6 +23,7 @@ const Window = styled.div`
   width: 300px;
   height: 200px;
   background-color: var(--color-white);
+  font-family: 'SUIT Variable', sans-serif;
   font-size: 20px;
 `;
 

@@ -36,6 +36,7 @@ const ListItem = styled.li`
   display: flex;
   justify-content: ${({ justify }) => justify};
   padding: 5px 0;
+  font-family: 'SUIT Variable', sans-serif;
 `;
 
 const Title = styled.label`
