@@ -5,6 +5,7 @@ const Emoji = require('./bot/schemas/Emoji');
 const reactEmoji = require('./bot/reactions/emoji');
 const collectLink = require('./bot/reactions/collectLink');
 const linkCommands = require('./bot/commands/link/command');
+const pickCommands = require('./bot/commands/pick/command');
 const emojiCommands = require('./bot/commands/emoji/command');
 
 const botServer = () => {
@@ -30,6 +31,7 @@ const botServer = () => {
       await reactEmoji(message, emojiRules);
       await collectLink(message);
       await linkCommands(message, client);
+      await pickCommands(message);
       await emojiCommands(message);
     } catch (err) {
       console.log(
