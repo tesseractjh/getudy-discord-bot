@@ -117,7 +117,9 @@ const getArray = string => {
     .replace(/\\,/g, rand)
     .split(',')
     .map(elem => elem.replace(new RegExp(rand, 'g'), ','));
-  return (output.length === 1 && output[0] === '') ? [] : output;
+  console.log(output);
+  console.log([...new Set(output)]);
+  return (output.length === 1 && output[0] === '') ? [] : [...new Set(output)];
 };
 
 export const getNewData = (collected, id) => {
