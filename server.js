@@ -1,13 +1,13 @@
 const path = require('path');
 const express = require('express');
-const botServer = require('./botServer');
+const bot = require('./botServer');
 const linkRouter = require('./routes/link');
 const emojiRouter = require('./routes/emoji');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-botServer();
+bot.server();
 app.use(express.static(path.resolve(__dirname, './build')));
 app.use(express.json());
 

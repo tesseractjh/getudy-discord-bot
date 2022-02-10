@@ -8,10 +8,16 @@ const linkCommands = require('./bot/commands/link/command');
 const pickCommands = require('./bot/commands/pick/command');
 const emojiCommands = require('./bot/commands/emoji/command');
 
-const botServer = () => {
+const emojiRules = [];
+const refreshEmoji = async () => {
+  const json = await Emoji.find({});
+  console.log('👍 Refresh emoji list')
+  json.forEach(rule => emojiRules.push(rule));
+};
+
+const server = () => {
   dotenv.config({ path: 'variables.env' });
   const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
-  const emojiRules = [];
   
   client.once('ready', () => {
     mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true }, async (err) => {
@@ -19,8 +25,7 @@ const botServer = () => {
         console.error(err);
       } else {
         console.log('✅ Connected to database');
-        const json = await Emoji.find({});
-        json.forEach(rule => emojiRules.push(rule));
+        refreshEmoji();
       }
     });
   });
@@ -45,4 +50,6 @@ const botServer = () => {
   client.login(process.env.TOKEN);
 };
 
-module.exports = botServer;
+module.exports = {
+  emojiRules, refreshEmoji, server
+};

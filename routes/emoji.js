@@ -1,5 +1,6 @@
 const express = require('express');
 const Emoji = require('../bot/schemas/Emoji');
+const { refreshEmoji } = require('../botServer');
 
 const router = express.Router();
 
@@ -32,6 +33,7 @@ router.post('/emoji', async (req, res) => {
   try {
     const { word, emoji, probability, options } = req.body;
     await new Emoji({ word, emoji, probability, options }).save();
+    await refreshEmoji();
     res.send('success');
   } catch (err) {
     console.log(err);
@@ -43,6 +45,7 @@ router.put('/emoji', async (req, res) => {
   try {
     const { _id, word, emoji, probability, options } = req.body;
     await Emoji.findOneAndUpdate({ _id }, { word, emoji, probability, options });
+    await refreshEmoji();
     res.send('success');
   } catch (err) {
     console.log(err);
@@ -54,6 +57,7 @@ router.delete('/emoji/:id', async (req, res) => {
   try {
     const { id } = req.params;
     await Emoji.findOneAndRemove({ _id: id });
+    await refreshEmoji();
     res.send('success');
   } catch (err) {
     console.log(err);
