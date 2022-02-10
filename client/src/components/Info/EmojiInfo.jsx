@@ -63,6 +63,7 @@ const Textarea = styled.textarea`
   font-size: 20px;
   overflow: hidden;
   word-break: break-all;
+  text-decoration: ${({ exact }) => exact ? 'line-through' : 'none'};
   text-align: ${({ align }) => align ?? 'left'};
   &:focus {
     background-color: var(--color-gray5);
@@ -115,30 +116,41 @@ const Icon = styled.svg`
   transform: scale(${({ scale }) => scale ?? 1.5});
 `;
 
-const Content = (Tag, type) => ({ id, data, ...rest }) => {
+const Content = (type) => ({ id, data, setExact, ...rest }) => {
   const tag = useRef();
   const [value, setValue] = useState(data);
   const handleInput = useCallback(e => {
     setValue(e.target.value);
+    if (setExact) {
+      if (e.target.value) {
+        setExact(true);
+      } else {
+        setExact(false);
+      }
+    }
   }, []);
   useEffect(() => {
     resize({ currentTarget: tag.current });
+    if (setExact && tag.current.value) {
+      setExact(true);
+    }
   }, []);
-  return <Tag ref={tag} id={`${type}${id}`} value={value} onInput={handleInput} onChange={resize} spellCheck="false" {...rest} />
+  return <Textarea ref={tag} id={`${type}${id}`} value={value} onInput={handleInput} onChange={resize} spellCheck="false" {...rest} />
 };
 
-const EmojiContent = Content(Textarea, 'emoji');
-const StartContent = Content(Textarea, 'start');
-const EndContent = Content(Textarea, 'end');
-const FixedContent = Content(Textarea, 'fixed');
-const MinContent = Content(Textarea, 'min');
-const WordContent = Content(Textarea, 'word');
-const ExactContent = Content(Textarea, 'exact');
-const ProbContent = Content(Textarea, 'prob');
+const EmojiContent = Content('emoji');
+const StartContent = Content('start');
+const EndContent = Content('end');
+const FixedContent = Content('fixed');
+const MinContent = Content('min');
+const WordContent = Content('word');
+const ExactContent = Content('exact');
+const ProbContent = Content('prob');
 
 const EmojiInfo = ({ data, isRegister }) => {
   const { dispatchModal } = useContext(ModalDispatch);
   const list = useRef();
+  const [exact, setExact] = useState(false);
   const disabled = 0;
 
   const handleSuccess = useCallback(() => {
@@ -157,7 +169,6 @@ const EmojiInfo = ({ data, isRegister }) => {
     const collected = findAllElements(list.current, 'textarea');
     const newData = getNewData(collected, data['_id']);
     const validation = isValidData(newData);
-    console.log(newData);
     if (validation === 'VALID') {
       const res = await fetch('/api/emoji', {
         method,
@@ -189,26 +200,26 @@ const EmojiInfo = ({ data, isRegister }) => {
         </ListItem>
         <ListItem>
           <Title htmlFor={`start${data['_id']}`}>시작</Title>
-          <StartContent disabled={disabled} id={data['_id']} data={data?.options?.start} />
+          <StartContent disabled={disabled} id={data['_id']} data={data?.options?.start} exact={exact} />
         </ListItem>
         <ListItem>
           <Title htmlFor={`end${data['_id']}`}>끝</Title>
-          <EndContent disabled={disabled} id={data['_id']} data={data?.options?.end} />
+          <EndContent disabled={disabled} id={data['_id']} data={data?.options?.end} exact={exact} />
         </ListItem>
         <ListItem>
           <Title htmlFor={`fixed${data['_id']}`}>반드시 포함</Title>
-          <FixedContent disabled={disabled} id={data['_id']} data={data?.options?.fixed} />
+          <FixedContent disabled={disabled} id={data['_id']} data={data?.options?.fixed} exact={exact} />
         </ListItem>
         <ListItem>
           <Title htmlFor={`word${data['_id']}`}>
             <MinContent disabled={disabled} flex="0.5" align="right" bold id={data['_id']} data={data?.options?.min ?? 1} />
             개 이상 포함
           </Title>
-          <WordContent disabled={disabled} id={data['_id']} data={data?.options?.isExact ? '' : data?.word} />
+          <WordContent disabled={disabled} id={data['_id']} data={data?.options?.isExact ? '' : data?.word} exact={exact} />
         </ListItem>
         <ListItem>
           <Title htmlFor={`exact${data['_id']}`}>정확히 일치</Title>
-          <ExactContent id={data['_id']} data={data?.options?.isExact ? data?.word : ''} />
+          <ExactContent id={data['_id']} data={data?.options?.isExact ? data?.word : ''} setExact={setExact} />
         </ListItem>
         <ListItem>
           <Title htmlFor={`exact${data['_id']}`}>확률</Title>
