@@ -13,7 +13,8 @@ const Emoji = new Schema(
       start: [String],
       end: [String],
       isExact: Boolean
-    }
+    },
+    isHidden: Boolean
   },
   {
     timestamps: true,

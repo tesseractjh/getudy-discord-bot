@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/emoji', async (req, res) => {
   const data = await Emoji
-    .find({}, 'word emoji probability options')
+    .find({}, 'word emoji probability options isHidden')
     .sort({ createdAt: -1 });
   res.json(data);
 });
@@ -24,7 +24,7 @@ router.get('/emoji/search', async (req, res) => {
         { 'options.end': { $regex: regex, $options: 'i' } },
         { 'options.fixed': { $regex: regex, $options: 'i' } } 
       ]
-    }, 'word emoji probability options')
+    }, 'word emoji probability options isHidden')
     .sort({ createdAt: -1 });
   res.json(data);
 });

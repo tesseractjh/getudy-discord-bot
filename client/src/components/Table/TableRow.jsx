@@ -110,16 +110,17 @@ const LinkData = ({ flexArr, data, index, detailed, setDetailed, handleDelete })
 };
 
 const EmojiData = ({ flexArr, data, index, detailed, setDetailed }) => {
-  const { emoji, probability } = data;
-  const condition = useMemo(() => getCondition(data, Accent), [data])
+  const { emoji, probability, isHidden } = data;
+  if (index === 15) console.log(data);
+  const condition = useMemo(() => getCondition(data, Accent), [data]);
   return (
     <>
       <Data flex={1}>{index}</Data>
       <Data flex={flexArr[0]} height="auto">{emoji.join('')}</Data>
-      <Data flex={flexArr[1]} height="auto" align="left" padding="0 10px">{condition}</Data>
+      <Data flex={flexArr[1]} height="auto" align="left" padding="0 10px">{isHidden ? '조건 비공개' : condition}</Data>
       <Data flex={flexArr[2]} isRed={probability === 1}>{`${probability * 100}%`}</Data>
       <Data flex={1} flexCenter>
-        <DetailButton detailed={detailed} setDetailed={setDetailed} />
+        {!isHidden && <DetailButton detailed={detailed} setDetailed={setDetailed} />}
       </Data>
     </>
   )
