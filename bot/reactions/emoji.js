@@ -69,6 +69,7 @@ const copyEmoji = (message, probability) => {
 };
 
 module.exports = (message, emojiRules) => {
+  if (['!링크', '!이모지', '!선택'].some(cmd => message.content.startsWith(cmd))) return;
   copyEmoji(message, 0.1);
   emojiRules.forEach(rule => react(message, rule));
 };
