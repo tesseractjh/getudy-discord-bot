@@ -8,10 +8,11 @@ const linkCommands = require('./bot/commands/link/command');
 const pickCommands = require('./bot/commands/pick/command');
 const emojiCommands = require('./bot/commands/emoji/command');
 
-const emojiRules = [];
+let emojiRules = [];
 const refreshEmoji = async () => {
   const json = await Emoji.find({});
   console.log('👍 Refresh emoji list')
+  emojiRules = [];
   json.forEach(rule => emojiRules.push(rule));
 };
 
