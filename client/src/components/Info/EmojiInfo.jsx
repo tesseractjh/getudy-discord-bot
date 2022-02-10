@@ -142,15 +142,15 @@ const EmojiInfo = ({ data, isRegister }) => {
   const disabled = 0;
 
   const handleSuccess = useCallback(() => {
-    dispatchModal({ type: 'SET', value: 'SUCCESS' });
+    dispatchModal({ type: 'WINDOW', value: 'SUCCESS' });
   }, []);
 
   const handleFail = useCallback(() => {
-    dispatchModal({ type: 'SET', value: 'FAIL' });
+    dispatchModal({ type: 'WINDOW', value: 'FAIL' });
   }, []);
 
   const handleInvalid = useCallback((validation) => {
-    dispatchModal({ type: 'SET', value: validation });
+    dispatchModal({ type: 'WINDOW', value: validation });
   }, []);
 
   const handleEdit = useCallback((method = 'PUT') => async () => {
@@ -176,8 +176,8 @@ const EmojiInfo = ({ data, isRegister }) => {
   }, []);
 
   const handleDelete = useCallback(async () => {
-    dispatchModal({ type: 'DATA_ID', value: data['_id'] });
-    dispatchModal({ type: 'SET', value: 'DELETE' });
+    dispatchModal({ type: 'SET_DATA_ID', value: data['_id'] });
+    dispatchModal({ type: 'WINDOW', value: 'DELETE' });
   }, []);
   
   return (

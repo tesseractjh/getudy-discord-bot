@@ -78,17 +78,15 @@ const emojiReducer = (state, action) => {
 
 const modalReducer = (state, action) => {
   switch (action.type) {
-    case 'SET':
+    case 'WINDOW':
       return { ...state, type: action.value, window: true };
-    case 'CLOSE':
-      return { ...state, type: false }
     case 'CLOSE_WINDOW':
-      return { ...state, window: false }
+      return { ...state, window: false };
+    case 'CLOSE_ALL':
+      return { ...state, window: false, register: false };
     case 'REGISTER':
       return { ...state, type: true, window: false, register: true };
-    case 'CLOSE_REGISTER':
-      return { ...state, type: false, window: false, register: false };
-    case 'DATA_ID':
+    case 'SET_DATA_ID':
       return { ...state, dataId: action.value };
     default:
       return state;
@@ -136,7 +134,7 @@ const Home = () => {
               <small>Copyright ©
               <FooterLink href="https://github.com/tesseractjh">tesseractjh</FooterLink>. All Rights Reserved.</small>
             </Footer>
-            {modal.type && <Modal page={page} />}
+            {(modal.window || modal.register) && <Modal page={page} />}
           </Container>
         </ModalDispatch.Provider>
       </EmojiDispatch.Provider>

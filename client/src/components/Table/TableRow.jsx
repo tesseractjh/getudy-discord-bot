@@ -128,8 +128,8 @@ const TableRow = ({ flexArr, data, index, page }) => {
   const { dispatchModal } = useContext(ModalDispatch);
   const [detailed, setDetailed] = useState(false);
   const handleDelete = useCallback(() => {
-    dispatchModal({ type: 'DATA_ID', value: data['_id'] });
-    dispatchModal({ type: 'SET', value: 'DELETE' });
+    dispatchModal({ type: 'SET_DATA_ID', value: data['_id'] });
+    dispatchModal({ type: 'WINDOW', value: 'DELETE' });
   }, [])
 
   return (

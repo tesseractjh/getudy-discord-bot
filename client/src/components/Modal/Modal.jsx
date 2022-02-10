@@ -75,9 +75,9 @@ const ModalWindow = ({ confirm, closeModal, dataId, page, children }) => {
     });
     const result = await res.text();
     if (result === 'success') {
-      dispatchModal({ type: 'SET', value: 'SUCCESS' });
+      dispatchModal({ type: 'WINDOW', value: 'SUCCESS' });
     } else {
-      dispatchModal({ type: 'SET', value: 'FAIL' });
+      dispatchModal({ type: 'WINDOW', value: 'FAIL' });
     }
   }, []);
   
@@ -115,20 +115,13 @@ const Modal = ({ page }) => {
   }
   const { modal: { type, window, dataId, register }, dispatchModal } = useContext(ModalDispatch);
   const closeAllModal = useCallback(() =>  {
-    dispatchModal({ type: 'CLOSE' });
+    dispatchModal({ type: 'CLOSE_ALL' });
   }, []);
   const closeModal = useCallback(() => {
-    if (register) {
-      dispatchModal({ type: 'CLOSE_WINDOW' });
-    } else {
-      dispatchModal({ type: 'CLOSE' });
-    }
+    dispatchModal({ type: 'CLOSE_WINDOW' });
   }, []);
   const refreshModal = useCallback(() => {
-    dispatchModal({ type: 'CLOSE' });
-    if (register) {
-      dispatchModal({ type: 'CLOSE_REGISTER' });
-    }
+    dispatchModal({ type: 'CLOSE_ALL' });
     fetch(`/api/${page}`)
       .then(res => res.json())
       .then(json => dispatch({ type: 'GET', json }));

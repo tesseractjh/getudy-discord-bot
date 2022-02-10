@@ -156,10 +156,10 @@ const LinkInfo = ({ data }) => {
   const list = useRef();
   const keywordList = useRef();
   const handleSuccess = useCallback(() => {
-    dispatchModal({ type: 'SET', value: 'SUCCESS' });
+    dispatchModal({ type: 'WINDOW', value: 'SUCCESS' });
   }, []);
   const handleFail = useCallback(() => {
-    dispatchModal({ type: 'SET', value: 'FAIL' });
+    dispatchModal({ type: 'WINDOW', value: 'FAIL' });
   }, []);
   const handleClick = useCallback(async () => {
     const collected = findAllElements(list.current, 'textarea');
