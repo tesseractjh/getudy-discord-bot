@@ -59,7 +59,7 @@ const SearchInput = React.memo(({ page }) => {
   const [value, setValue] = useState('');
   const handleChange = useCallback(e => {
     setValue(e.target.value);
-    fetch(`/api/link/${e.target.value}`)
+    fetch(`/api/${page}/search?keyword=${encodeURIComponent(e.target.value)}`)
       .then(res => res.json())
       .then(json => dispatch({ type: 'GET', json }));
   }, []);

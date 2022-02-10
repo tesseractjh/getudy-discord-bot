@@ -10,6 +10,24 @@ router.get('/emoji', async (req, res) => {
   res.json(data);
 });
 
+router.get('/emoji/search', async (req, res) => {
+  const { keyword } = req.query;
+  const keywords = keyword.trim().split(/\s+/).map(map => map.replace(/(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])/g, '\\'));
+  const regex = new RegExp(keywords.map(word => `(?=.*${word})`).join('|'));
+  const data = await Emoji
+    .find({
+      $or: [
+        { emoji: { $regex: regex, $options: 'i' } },
+        { word: { $regex: regex, $options: 'i' } },
+        { 'options.start': { $regex: regex, $options: 'i' } },
+        { 'options.end': { $regex: regex, $options: 'i' } },
+        { 'options.fixed': { $regex: regex, $options: 'i' } } 
+      ]
+    }, 'word emoji probability options')
+    .sort({ createdAt: -1 });
+  res.json(data);
+});
+
 router.post('/emoji', async (req, res) => {
   try {
     const { word, emoji, probability, options } = req.body;
