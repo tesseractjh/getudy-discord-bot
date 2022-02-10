@@ -49,11 +49,11 @@ const FooterLink = styled.a`
   }
 `;
 
-const HomeHeader = React.memo(() => {
+export const HomeHeader = React.memo(({ children }) => {
   return (
     <Header>
       <HeaderImg src={bot} />
-      <HeaderTitle>게터디봇 관리페이지</HeaderTitle>
+      <HeaderTitle>{children}</HeaderTitle>
     </Header>
   );
 });
@@ -108,7 +108,7 @@ const Home = () => {
       <EmojiDispatch.Provider value ={{ emojiData, dispatchEmoji }}>
         <ModalDispatch.Provider value={{ modal, dispatchModal }}>
           <Container>
-            <HomeHeader />
+            <HomeHeader>게터디봇 관리페이지</HomeHeader>
             <main>
               <Nav>
                 <NavButton page={page} setPage={setPage} pageName="link">⛓️ 링크</NavButton>

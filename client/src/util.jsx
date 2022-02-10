@@ -1,5 +1,19 @@
 import { useCallback } from 'react';
 
+export const getCode = () => {
+  return localStorage.getItem('getudyAuth');
+};
+
+export const auth = async () => {
+  try {
+    const res = await fetch(`/api/auth/${getCode()}`);
+    const { result } = await res.json();
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const resize = ({ currentTarget }) => {
   currentTarget.style.height = 0;
   const { scrollHeight } = currentTarget;
