@@ -3,13 +3,9 @@ dotenv.config({ path: 'variables.env' });
 
 const condition = (options, message, words) => {
   const { type, start, end, fixed } = options;
-  let starts = start, ends = end, fixeds = fixed;
-  if (typeof start === 'string') starts = [start];
-  if (typeof end === 'string') ends = [end];
-  if (typeof fixed === 'string') fixeds = [fixed];
-  if (starts.length && !starts.some(word => message.content.startsWith(word))) return false;
-  if (ends.length && !ends.some(word => message.content.endsWith(word))) return false;
-  if (fixeds.length && !fixeds.every(word => message.content.includes(word))) return false;
+  if (start.length && !start.some(word => message.content.startsWith(word))) return false;
+  if (end.length && !end.some(word => message.content.endsWith(word))) return false;
+  if (fixed.length && !fixed.every(word => message.content.includes(word))) return false;
   switch (type) {
     // 단어 목록(words) 중 한 개 이상 포함될 때
     case 'SINGLE':
@@ -22,28 +18,29 @@ const condition = (options, message, words) => {
     // 단어 목록 중 하나와 정확히 일치할 때
     case 'EXACT':
       return words.some(word => message.content === word);
+    case 'OTHER':
+      return true;
     default: throw new Error('react 타입이 잘못됨');
   }
 };
 
 const getReact = (message, options) => {
   return (word, emoji, probability = 1) => {
-    let words = word, emojis = emoji;
-    if (typeof word === 'string') words = [word];
-    if (typeof emoji === 'string') emojis = [emoji];
-    if (condition(options, message, words)) {
+    if (condition(options, message, word)) {
       if (probability < Math.random()) return;
-      [...emojis[Math.floor(Math.random() * emojis.length)]]
-        .forEach(emoji => message.react(emoji));
+      [...emoji[Math.floor(Math.random() * emoji.length)]]
+        .forEach(emj => message.react(emj));
     }
   };
 };
 
-const setType = (options) => {
+const setType = (word, options) => {
   const { min, isExact } = options;
   let type = 'SINGLE';
   if (isExact) {
     type = 'EXACT';
+  } else if (word?.length === 0) {
+    type = 'OTHER';
   } else if (min > 1) {
     type = 'PLURAL';
   }
@@ -52,7 +49,7 @@ const setType = (options) => {
 
 const react = (message, rule) => {
   const { word, emoji, probability, options } = rule;
-  setType(options);
+  if (!options.type) setType(word, options);
   getReact(message, options)(word, emoji, probability);
 };
 
