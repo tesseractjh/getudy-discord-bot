@@ -79,7 +79,7 @@ export const getCondition = (data, Component) => {
     }
   
     if (fixed?.length) {
-      const text = fixed.length === 1 ? '를 포함' : ' 모두를 포함';
+      const text = fixed.length === 1 ? '을(를) 포함' : ' 모두를 포함';
       output.push(...fixed.map(word => wrapped(word)), text)
     }
   
