@@ -219,7 +219,7 @@ const EmojiInfo = ({ data, isRegister }) => {
           <ExactContent id={data['_id']} data={data?.options?.isExact ? data?.word : ''} setExact={setExact} />
         </ListItem>
         <ListItem>
-          <Title htmlFor={`exact${data['_id']}`}>확률</Title>
+          <Title htmlFor={`prob${data['_id']}`}>확률</Title>
           <ProbContent id={data['_id']} data={Number.isNaN(data?.probability * 100) ? '' : data.probability * 100} />
         </ListItem>
         <ListItem justify="flex-end">
