@@ -27,6 +27,7 @@ const HeaderImg = styled.img`
 `;
 
 const HeaderTitle = styled.h1`
+  font-family: 'SUIT Variable', sans-serif;
   font-size: 40px;
   font-weight: 700;
 `;

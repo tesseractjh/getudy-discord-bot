@@ -119,6 +119,7 @@ const Icon = styled.svg`
 `;
 
 const FormFooter = styled.p`
+  font-family: 'SUIT Variable', sans-serif;
   font-size: 18px;
   line-height: 36px;
 `;
