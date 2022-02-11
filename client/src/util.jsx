@@ -171,8 +171,8 @@ const isValidMin = min => {
   return Number.isInteger(min) && min > 0 && min <= 99;
 };
 
-export const isValidData = ({ word, emoji, probability, options: { min, fixed, isExact } }) => {
-  if (isExact || fixed.length) {
+export const isValidData = ({ word, emoji, probability, options: { min, start, end, fixed, isExact } }) => {
+  if (isExact || fixed.length || start.length || end.length) {
     if (!emoji.length || probability === 0) return 'INVALID_REQ2';
     if (probability === 0 || Number.isNaN(probability)) return 'INVALID_PROB';
     if (!isExact && word.length) {
