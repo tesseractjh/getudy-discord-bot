@@ -172,14 +172,14 @@ const isValidMin = min => {
 export const isValidData = ({ word, emoji, probability, options: { min, start, end, fixed, isExact } }) => {
   if (isExact || fixed.length || start.length || end.length) {
     if (!emoji.length || probability === 0) return 'INVALID_REQ2';
-    if (probability === 0 || Number.isNaN(probability)) return 'INVALID_PROB';
+    if (!isValidProbability(probability)) return 'INVALID_PROB';
     if (!isExact && word.length) {
       if (!isValidMin(min)) return 'INVALID_MIN';
       if (min > word.length) return 'INVALID_MIN_VALUE';
     }
   } else {
     if (!emoji.length || !word.length || probability === 0) return 'INVALID_REQ';
-    if (probability === 0 || Number.isNaN(probability)) return 'INVALID_PROB';
+    if (!isValidProbability(probability)) return 'INVALID_PROB';
     if (!isValidMin(min)) return 'INVALID_MIN';
     if (min > word.length) return 'INVALID_MIN_VALUE';
   }
