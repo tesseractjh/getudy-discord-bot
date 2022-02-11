@@ -14,6 +14,18 @@ export const auth = async () => {
   }
 };
 
+export const customReq = (method = 'GET', body) => {
+  const req = {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authentication': `Bearer ${getCode()}`
+    }
+  };
+  if (body) req.body = JSON.stringify(body);
+  return req;
+};
+
 export const resize = ({ currentTarget }) => {
   currentTarget.style.height = 0;
   const { scrollHeight } = currentTarget;
@@ -131,8 +143,6 @@ const getArray = string => {
     .replace(/\\,/g, rand)
     .split(',')
     .map(elem => elem.replace(new RegExp(rand, 'g'), ','));
-  console.log(output);
-  console.log([...new Set(output)]);
   return (output.length === 1 && output[0] === '') ? [] : [...new Set(output)];
 };
 

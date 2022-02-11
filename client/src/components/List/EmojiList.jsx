@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { EmojiDispatch } from '../../pages/Home';
+import { customReq } from '../../util';
 import SearchBar from '../SearchBar';
 import Table from '../Table/Table';
 
@@ -9,7 +10,7 @@ const flexArr = [3, 12, 2];
 const EmojiList = () => {
   const { dispatchEmoji } = useContext(EmojiDispatch);
   useEffect(() => {
-    fetch('/api/emoji')
+    fetch('/api/emoji', customReq())
       .then(res => res.json())
       .then(json => dispatchEmoji({ type: 'GET', json }));
   }, []);

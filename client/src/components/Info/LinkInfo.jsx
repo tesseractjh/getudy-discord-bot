@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { findAllElements, resize } from '../../util';
+import { customReq, findAllElements, resize } from '../../util';
 import DeleteIcon from '../../assets/images/x-circle-fill.svg';
 import EditIcon from '../../assets/images/pencil-square.svg';
 import { ModalDispatch } from '../../pages/Home';
@@ -169,11 +169,7 @@ const LinkInfo = ({ data }) => {
       link: collected[1],
       keywords: collected.slice(2)
     };
-    const res = await fetch('/api/link', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newData)
-    });
+    const res = await fetch('/api/link', customReq('PUT', newData));
     const result = await res.text();
     if (result === 'success') {
       handleSuccess();

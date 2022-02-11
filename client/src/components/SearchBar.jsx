@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import SearchIcon from '../assets/images/search.svg';
 import PlusIcon from '../assets/images/plus-circle-fill.svg';
 import { LinkDispatch, EmojiDispatch, ModalDispatch } from '../pages/Home';
+import { customReq } from '../util';
 
 const SearchContainer = styled.form`
   position: relative;
@@ -59,7 +60,7 @@ const SearchInput = React.memo(({ page }) => {
   const [value, setValue] = useState('');
   const handleChange = useCallback(e => {
     setValue(e.target.value);
-    fetch(`/api/${page}/search?keyword=${encodeURIComponent(e.target.value)}`)
+    fetch(`/api/${page}/search?keyword=${encodeURIComponent(e.target.value)}`, customReq())
       .then(res => res.json())
       .then(json => dispatch({ type: 'GET', json }));
   }, []);

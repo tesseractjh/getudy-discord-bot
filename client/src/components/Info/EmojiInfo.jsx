@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { findAllElements, getSetter, isValidData, resize } from '../../util';
+import { customReq, findAllElements, getSetter, isValidData, resize } from '../../util';
 import DeleteIcon from '../../assets/images/x-circle.svg';
 import EditIcon from '../../assets/images/pencil-square.svg';
 import { getNewData } from '../../util';
@@ -171,11 +171,7 @@ const EmojiInfo = ({ data, isRegister }) => {
     const newData = getNewData(collected, data['_id']);
     const validation = isValidData(newData);
     if (validation === 'VALID') {
-      const res = await fetch('/api/emoji', {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newData)
-      });
+      const res = await fetch('/api/emoji', customReq(method, newData));
       const result = await res.text();
       if (result === 'success') {
         handleSuccess();

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { resize } from '../util';
+import { customReq, resize } from '../util';
 import EnterIcon from '../assets/images/box-arrow-in-right.svg';
 import { useState, useCallback, useContext, useEffect, useRef } from 'react';
 import { ModalDispatch } from '../pages/Home';
@@ -93,11 +93,7 @@ const Bamboo = () => {
   const handleSend = useCallback(async () => {
     if (!message) return;
     const id = [...select.current.children].find(({ selected }) => selected).value;
-    const res = fetch('/api/message', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, message })
-    });
+    const res = fetch('/api/message', customReq('POST', { id, message }));
     const result = await res.text();
     if (result === 'success') {
       dispatchModal({ type: 'WINDOW', value: 'SUCCESS' });
@@ -108,7 +104,7 @@ const Bamboo = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch('/api/channel');
+      const res = await fetch('/api/channel', customReq());
       const json = await res.json();
       setChannelList(json);
     })();
