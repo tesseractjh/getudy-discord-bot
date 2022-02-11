@@ -100,6 +100,7 @@ const Bamboo = () => {
     } else {
       dispatchModal({ type: 'WINDOW', value: 'FAIL' });
     }
+    setMessage('');
   }, [message]);
 
   useEffect(() => {
