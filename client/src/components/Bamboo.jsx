@@ -118,6 +118,7 @@ const Bamboo = () => {
           {
             channelList?.map(channel => (
               <option
+                key={channel.id}
                 value={channel.id}
                 selected={channel.id === CH_NORMAL}
               >
