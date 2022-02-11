@@ -144,9 +144,9 @@ const Modal = ({ page }) => {
             case 'DELETE': 
               return <ModalWindow closeModal={closeModal} dataId={dataId} page={page} confirm>정말로 삭제하시겠습니까?</ModalWindow>;
             case 'INVALID_REQ':
-              return <ModalWindow closeModal={closeModal}>이모지, ~개 이상 포함, 확률은 필수사항입니다!</ModalWindow>;
+              return <ModalWindow closeModal={closeModal}>이모지, 확률, 그리고 나머지 중 최소 1개 이상은 반드시 입력해야 합니다!</ModalWindow>;
             case 'INVALID_REQ2':
-              return <ModalWindow closeModal={closeModal}>이모지, 확률은 필수사항입니다!</ModalWindow>;
+              return <ModalWindow closeModal={closeModal}>이모지, 확률은 반드시 입력해야 합니다!</ModalWindow>;
             case 'INVALID_PROB':
               return <ModalWindow closeModal={closeModal}>확률은 0보다 크고 100이하인 수를 입력해야 합니다!</ModalWindow>;
             case 'INVALID_MIN':
