@@ -38,7 +38,7 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   position: absolute;
-  right: 60px;
+  right: calc(10% - 45px);
   width: 30px;
   height: 30px;
   &:hover svg {
