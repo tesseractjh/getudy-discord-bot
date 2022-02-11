@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { customReq, findAllElements, getSetter, isValidData, resize } from '../../util';
 import DeleteIcon from '../../assets/images/x-circle.svg';
 import EditIcon from '../../assets/images/pencil-square.svg';
+import InfoIcon from '../../assets/images/question-circle.svg';
 import { getNewData } from '../../util';
 import { ModalDispatch } from '../../pages/Home';
 
@@ -86,7 +87,7 @@ const Button = styled.button`
   }
 `;
 
-const EditButton = styled(Button)`
+const LeftButton = styled(Button)`
   padding: 20px;
   border-radius: 10px;
   background-color: var(--color-gray4);
@@ -95,7 +96,7 @@ const EditButton = styled(Button)`
   }
 `;
 
-const DeleteButton = styled(Button)`
+const RightButton = styled(Button)`
   padding: 20px;
   margin-left: 20px;
   border-radius: 10px;
@@ -115,6 +116,11 @@ const DeleteButton = styled(Button)`
 
 const Icon = styled.svg`
   transform: scale(${({ scale }) => scale ?? 1.5});
+`;
+
+const FormFooter = styled.p`
+  font-size: 18px;
+  line-height: 36px;
 `;
 
 const Content = (type) => ({ id, data, setExact, ...rest }) => {
@@ -152,6 +158,7 @@ const EmojiInfo = ({ data, isRegister }) => {
   const { dispatchModal } = useContext(ModalDispatch);
   const list = useRef();
   const [exact, setExact] = useState(false);
+  const [info, setInfo] = useState(false);
   const disabled = 0;
 
   const handleSuccess = useCallback(() => {
@@ -187,6 +194,10 @@ const EmojiInfo = ({ data, isRegister }) => {
     dispatchModal({ type: 'SET_DATA_ID', value: data['_id'] });
     dispatchModal({ type: 'WINDOW', value: 'DELETE' });
   }, []);
+
+  const handleInfo = useCallback(() => {
+    setInfo(true);
+  });
   
   return (
     <Form isRegister={isRegister}>
@@ -225,24 +236,47 @@ const EmojiInfo = ({ data, isRegister }) => {
         <ListItem justify="flex-end">
           {
             isRegister
-              ? <EditButton type="button" onClick={handleEdit('POST')}>
-                <Icon as={EditIcon} />
-                추가
-              </EditButton>
+              ? <>
+                <LeftButton type="button" onClick={handleInfo}>
+                  <Icon as={InfoIcon} />
+                  도움말
+                </LeftButton>
+                <RightButton type="button" onClick={handleEdit('POST')}>
+                  <Icon as={EditIcon} />
+                  추가
+                </RightButton>
+              </>
               : <>
-                <EditButton type="button" onClick={handleEdit()}>
+                <LeftButton type="button" onClick={handleEdit()}>
                   <Icon as={EditIcon} />
                   수정
-                  </EditButton>
-                <DeleteButton type="button" onClick={handleDelete}>
+                  </LeftButton>
+                <RightButton type="button" onClick={handleDelete}>
                   <Icon as={DeleteIcon} />
                   삭제
-                </DeleteButton>
+                </RightButton>
               </>
           }
-          
         </ListItem>
       </ul>
+      {
+        info &&
+        <FormFooter>
+          이모지와 확률은 반드시 입력해야 합니다.
+          <br />
+          이모지와 확률을 제외한 나머지 중 최소 1개는 반드시 입력해야 합니다.
+          <br />
+          이모지나 단어를 여러 개 입력할 때에는 쉼표로 구분해야 합니다.
+          <br />
+          띄어쓰기는 그대로 단어에 반영되므로, 쉼표로 구분할 때 띄어쓰지 않도록 주의하세요.
+          <br />
+          쉼표를 단어에 포함시키려면 쉼표 앞에 이스케이프 문자(\)를 삽입해주세요.
+          <br />
+          이모지 여러 개를 띄어쓰기 없이 붙여 쓰면 한 번에 여러 개의 이모지 반응이 일어납니다.
+          <br />
+          한 글자 단어를 조건으로 쓸 경우에는 가급적이면 여러 조건들을 곁들여서 의도치 않은 이모지 반응이 일어나지 않도록 주의하세요.
+        </FormFooter>
+      }
     </Form>
   )
 };
