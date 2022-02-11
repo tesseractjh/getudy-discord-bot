@@ -75,7 +75,7 @@ const ModalWindow = ({ confirm, closeModal, dataId, page, children }) => {
     const res = await fetch(`/api/${page}/${dataId}`, customReq('DELETE'));
     const result = await res.text();
     if (result === 'success') {
-      dispatchModal({ type: 'WINDOW', value: 'SUCCESS' });
+      dispatchModal({ type: 'WINDOW', value: 'SUCCESS_SEND' });
     } else {
       dispatchModal({ type: 'WINDOW', value: 'FAIL' });
     }
@@ -155,6 +155,8 @@ const Modal = ({ page }) => {
               return <ModalWindow closeModal={closeModal}>N개 이상 포함의 N은 단어의 개수 이하여야 합니다!</ModalWindow>;
             case 'SUCCESS':
               return <ModalWindow closeModal={refreshModal}>성공적으로 처리되었습니다!</ModalWindow>;
+            case 'SUCCESS_SEND':
+              return <ModalWindow closeModal={refreshModal}>전송되었습니다!</ModalWindow>;
             case 'FAIL':
               return <ModalWindow closeModal={refreshModal}>오류가 발생하여 요청하신 작업이 처리되지 않았습니다!</ModalWindow>;
             default:
