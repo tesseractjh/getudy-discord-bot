@@ -93,7 +93,7 @@ const Bamboo = () => {
   const handleSend = useCallback(async () => {
     if (!message) return;
     const id = [...select.current.children].find(({ selected }) => selected).value;
-    const res = fetch('/api/message', customReq('POST', { id, message }));
+    const res = await fetch('/api/message', customReq('POST', { id, message }));
     const result = await res.text();
     if (result === 'success') {
       dispatchModal({ type: 'WINDOW', value: 'SUCCESS' });
