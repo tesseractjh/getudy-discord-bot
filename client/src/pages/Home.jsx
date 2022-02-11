@@ -4,6 +4,7 @@ import bot from '../assets/images/bot.png';
 import NavButton from '../components/Button/NavButton';
 import EmojiList from '../components/List/EmojiList';
 import LinkList from '../components/List/LinkList';
+import Bamboo from '../components/Bamboo';
 import Modal from '../components/Modal/Modal';
 
 const Container = styled.div`
@@ -123,6 +124,8 @@ const Home = () => {
                         return (<LinkList />);
                       case 'emoji':
                         return (<EmojiList />);
+                      case 'bamboo':
+                        return (<Bamboo />);
                       default:
                         return;
                     }

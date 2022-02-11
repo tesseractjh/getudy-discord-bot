@@ -9,6 +9,7 @@ const pickCommands = require('./bot/commands/pick/command');
 const emojiCommands = require('./bot/commands/emoji/command');
 
 let emojiRules = [];
+const clientList = [];
 const refreshEmoji = async () => {
   const json = await Emoji.find({});
   console.log('👍 Refresh emoji list')
@@ -16,7 +17,7 @@ const refreshEmoji = async () => {
   json.forEach(rule => emojiRules.push(rule));
 };
 
-const server = () => {
+const server = async () => {
   dotenv.config({ path: 'variables.env' });
   const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
   
@@ -48,9 +49,10 @@ const server = () => {
     }
   });
   
-  client.login(process.env.TOKEN);
+  await client.login(process.env.TOKEN);
+  clientList.push(client);
 };
 
 module.exports = {
-  emojiRules, refreshEmoji, server
+  emojiRules, refreshEmoji, server, clientList
 };

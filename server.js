@@ -4,6 +4,7 @@ const bot = require('./botServer');
 const linkRouter = require('./routes/link');
 const emojiRouter = require('./routes/emoji');
 const authRouter = require('./routes/auth');
+const messageRouter = require('./routes/message');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use('/api', authRouter);
 app.use('/api', linkRouter);
 app.use('/api', emojiRouter);
+app.use('/api', messageRouter);
 
 app.use('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './dist/index.html'));
