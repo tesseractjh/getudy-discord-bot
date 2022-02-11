@@ -75,7 +75,7 @@ const ModalWindow = ({ confirm, closeModal, dataId, page, children }) => {
     const res = await fetch(`/api/${page}/${dataId}`, customReq('DELETE'));
     const result = await res.text();
     if (result === 'success') {
-      dispatchModal({ type: 'WINDOW', value: 'SUCCESS_SEND' });
+      dispatchModal({ type: 'WINDOW', value: 'SUCCESS' });
     } else {
       dispatchModal({ type: 'WINDOW', value: 'FAIL' });
     }

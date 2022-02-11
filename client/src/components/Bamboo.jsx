@@ -96,7 +96,7 @@ const Bamboo = () => {
     const res = await fetch('/api/message', customReq('POST', { id, message }));
     const result = await res.text();
     if (result === 'success') {
-      dispatchModal({ type: 'WINDOW', value: 'SUCCESS' });
+      dispatchModal({ type: 'WINDOW', value: 'SUCCESS_SEND' });
     } else {
       dispatchModal({ type: 'WINDOW', value: 'FAIL' });
     }
