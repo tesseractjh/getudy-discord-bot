@@ -1,6 +1,7 @@
 import { useCallback, useContext } from 'react';
 import styled from 'styled-components';
 import { LinkDispatch, EmojiDispatch, ModalDispatch } from '../../pages/Home';
+import { customReq } from '../../util';
 import EmojiInfo from '../Info/EmojiInfo';
 
 const Background = styled.div`
@@ -71,9 +72,7 @@ const YesButton = styled.button`
 const ModalWindow = ({ confirm, closeModal, dataId, page, children }) => {
   const { dispatchModal } = useContext(ModalDispatch);
   const deleteData = useCallback(async () => {
-    const res = await fetch(`/api/${page}/${dataId}`, {
-      method: 'DELETE'
-    });
+    const res = await fetch(`/api/${page}/${dataId}`, customReq('DELETE'));
     const result = await res.text();
     if (result === 'success') {
       dispatchModal({ type: 'WINDOW', value: 'SUCCESS' });
@@ -123,7 +122,7 @@ const Modal = ({ page }) => {
   }, []);
   const refreshModal = useCallback(() => {
     dispatchModal({ type: 'CLOSE_ALL' });
-    fetch(`/api/${page}`)
+    fetch(`/api/${page}`, customReq())
       .then(res => res.json())
       .then(json => dispatch({ type: 'GET', json }));
   }, []);
