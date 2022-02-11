@@ -196,7 +196,7 @@ const EmojiInfo = ({ data, isRegister }) => {
   }, []);
 
   const handleInfo = useCallback(() => {
-    setInfo(true);
+    setInfo(prev => !prev);
   });
   
   return (
