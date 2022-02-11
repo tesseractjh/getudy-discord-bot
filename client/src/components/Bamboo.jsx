@@ -62,11 +62,11 @@ const Button = styled.button`
   background-color: var(--color-gray4);
   font-size: 20px;
   &:hover {
-    background-color: var(--color-red);
-    color: var(--color-white);
+    background-color: var(--color-gray5);
+    color: var(--color-red);
   }
   &:hover svg {
-    fill: var(--color-white);
+    fill: var(--color-red);
   }
 `;
 
