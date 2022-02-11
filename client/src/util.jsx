@@ -84,10 +84,8 @@ export const getCondition = (data, Component) => {
     }
   
     if (word.length === 1) {
-      if (word[0] !== '') {
-        output.push(...word.map(w => wrapped(w)), ' 포함');
-      }
-    } else {
+      output.push(...word.map(w => wrapped(w)), ' 포함');
+    } else if (word.length > 1) {
       output.push(...word.map(w => wrapped(w)), ` 중 ${min}개 이상 포함`);
     }
   }
