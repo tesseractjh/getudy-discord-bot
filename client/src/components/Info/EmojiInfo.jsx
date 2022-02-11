@@ -162,32 +162,21 @@ const EmojiInfo = ({ data, isRegister }) => {
   const [info, setInfo] = useState(false);
   const disabled = 0;
 
-  const handleSuccess = useCallback(() => {
-    dispatchModal({ type: 'WINDOW', value: 'SUCCESS' });
-  }, []);
-
-  const handleFail = useCallback(() => {
-    dispatchModal({ type: 'WINDOW', value: 'FAIL' });
-  }, []);
-
-  const handleInvalid = useCallback((validation) => {
-    dispatchModal({ type: 'WINDOW', value: validation });
-  }, []);
-
   const handleEdit = useCallback((method = 'PUT') => async () => {
     const collected = findAllElements(list.current, 'textarea');
     const newData = getNewData(collected, data['_id']);
     const validation = isValidData(newData);
     if (validation === 'VALID') {
+      dispatchModal({ type: 'WINDOW', value: 'SPINNER' });
       const res = await fetch('/api/emoji', customReq(method, newData));
       const result = await res.text();
       if (result === 'success') {
-        handleSuccess();
+        dispatchModal({ type: 'WINDOW', value: 'SUCCESS' });
       } else {
-        handleFail();
+        dispatchModal({ type: 'WINDOW', value: 'FAIL' });
       }
     } else {
-      handleInvalid(validation);
+      dispatchModal({ type: 'WINDOW', value: validation });
     }
   }, []);
 

@@ -155,13 +155,8 @@ const LinkInfo = ({ data }) => {
   const { dispatchModal } = useContext(ModalDispatch);
   const list = useRef();
   const keywordList = useRef();
-  const handleSuccess = useCallback(() => {
-    dispatchModal({ type: 'WINDOW', value: 'SUCCESS' });
-  }, []);
-  const handleFail = useCallback(() => {
-    dispatchModal({ type: 'WINDOW', value: 'FAIL' });
-  }, []);
-  const handleClick = useCallback(async () => {
+
+  const handleEdit = useCallback(async () => {
     const collected = findAllElements(list.current, 'textarea');
     const newData = {
       _id: data['_id'],
@@ -169,12 +164,13 @@ const LinkInfo = ({ data }) => {
       link: collected[1],
       keywords: collected.slice(2)
     };
+    dispatchModal({ type: 'WINDOW', value: 'SPINNER' });
     const res = await fetch('/api/link', customReq('PUT', newData));
     const result = await res.text();
     if (result === 'success') {
-      handleSuccess();
+      dispatchModal({ type: 'WINDOW', value: 'SUCCESS' });
     } else {
-      handleFail();
+      dispatchModal({ type: 'WINDOW', value: 'FAIL' });
     }
   }, []);
   
@@ -200,7 +196,7 @@ const LinkInfo = ({ data }) => {
           </KeywordList>
         </ListItem>
         <ListItem justify="flex-end">
-          <EditButton type="button" onClick={handleClick}>
+          <EditButton type="button" onClick={handleEdit}>
             <Icon as={EditIcon} />
             수정
           </EditButton>

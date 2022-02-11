@@ -1,6 +1,7 @@
 import { useCallback, useContext } from 'react';
 import styled from 'styled-components';
 import { LinkDispatch, EmojiDispatch, ModalDispatch } from '../../pages/Home';
+import Spinner from '../Spinner';
 import { customReq } from '../../util';
 import EmojiInfo from '../Info/EmojiInfo';
 
@@ -69,9 +70,17 @@ const YesButton = styled.button`
   }
 `;
 
+const spinnerStyle = {
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)'
+};
+
 const ModalWindow = ({ confirm, closeModal, dataId, page, children }) => {
   const { dispatchModal } = useContext(ModalDispatch);
   const deleteData = useCallback(async () => {
+    dispatchModal({ type: 'WINDOW', value: 'SPINNER' });
     const res = await fetch(`/api/${page}/${dataId}`, customReq('DELETE'));
     const result = await res.text();
     if (result === 'success') {
@@ -159,6 +168,8 @@ const Modal = ({ page }) => {
               return <ModalWindow closeModal={refreshModal}>전송되었습니다!</ModalWindow>;
             case 'FAIL':
               return <ModalWindow closeModal={refreshModal}>오류가 발생하여 요청하신 작업이 처리되지 않았습니다!</ModalWindow>;
+            case 'SPINNER':
+              return <Spinner style={spinnerStyle}/>;
             default:
               return;
           }

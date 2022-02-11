@@ -28,9 +28,9 @@ const SpinnerQuarter = styled.td`
   animation-delay: ${({ delay }) => delay ?? 0}s;
 `;
 
-const Spinner = () => {
+const Spinner = (props) => {
   return (
-    <SpinnerWrapper>
+    <SpinnerWrapper {...props}>
       <SpinnerQuarter delay={-0.45} />
       <SpinnerQuarter delay={-0.3} />
       <SpinnerQuarter delay={-0.15} />
