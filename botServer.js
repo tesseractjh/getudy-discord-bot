@@ -6,6 +6,7 @@ const reactEmoji = require('./bot/reactions/emoji');
 const collectLink = require('./bot/reactions/collectLink');
 const linkCommands = require('./bot/commands/link/command');
 const pickCommands = require('./bot/commands/pick/command');
+const ladderCommands = require('./bot/commands/ladder/command');
 const emojiCommands = require('./bot/commands/emoji/command');
 
 let emojiRules = [];
@@ -39,6 +40,7 @@ const server = async () => {
       await collectLink(message);
       await linkCommands(message, client);
       await pickCommands(message);
+      await ladderCommands(message);
       await emojiCommands(message);
     } catch (err) {
       console.log(
