@@ -1,11 +1,13 @@
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
-const { CH_REFERENCE } = require('../constants');
+const dotenv = require('dotenv');
 const Link = require('../schemas/Link');
 const URL = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
+dotenv.config({ path: 'variables.env' });
+
 module.exports = (message) => {
-  if (message.channel.id.toString() !== CH_REFERENCE) return;
+  if (message.channel.id.toString() !== process.env.REFERENCE_CHANNEL_ID) return;
   const tokens = message.content
     .split('\n')
     .map(token => token.trim())

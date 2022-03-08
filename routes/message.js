@@ -1,11 +1,14 @@
 const express = require('express');
+const dotenv = require('dotenv');
 const { clientList } = require('../bot/botServer');
 const router = express.Router();
+
+dotenv.config({ path: 'variables.env' });
 
 router.get('/channel', (req, res) => {
   res.json(
     clientList[0].channels.cache
-      .filter(({ type, guildId }) => type === 'GUILD_TEXT' && guildId === '906178551445860363')
+      .filter(({ type, guildId }) => type === 'GUILD_TEXT' && guildId === process.env.GUILD_ID)
       .map(({ name, id }) => ({ name, id }))
   );
 });

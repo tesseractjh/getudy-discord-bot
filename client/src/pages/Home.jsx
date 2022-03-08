@@ -6,6 +6,8 @@ import EmojiList from '../components/List/EmojiList';
 import LinkList from '../components/List/LinkList';
 import Bamboo from '../components/Bamboo';
 import Modal from '../components/Modal/Modal';
+import { useEffect } from 'react';
+import { customReq } from '../util';
 
 const Container = styled.div`
   max-width: 1024px;
@@ -95,54 +97,67 @@ const modalReducer = (state, action) => {
   }
 };
 
+export const IdContext = React.createContext(null);
 export const LinkDispatch = React.createContext(null);
 export const EmojiDispatch = React.createContext(null);
 export const ModalDispatch = React.createContext(null);
 
 const Home = () => {
+  const [id, setId] = useState(null);
   const [linkData, dispatchLink] = useReducer(linkReducer);
   const [emojiData, dispatchEmoji] = useReducer(emojiReducer);
   const [modal, dispatchModal] = useReducer(modalReducer, {});
   const [page, setPage] = useState('link');
 
+  useEffect(() => {
+    fetch('/api/id', customReq())
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        setId(json);
+      });
+  }, []);
+
   return (
-    <LinkDispatch.Provider value={{ linkData, dispatchLink }}>
-      <EmojiDispatch.Provider value ={{ emojiData, dispatchEmoji }}>
-        <ModalDispatch.Provider value={{ modal, dispatchModal }}>
-          <Container>
-            <HomeHeader>게터디봇 관리페이지</HomeHeader>
-            <main>
-              <Nav>
-                <NavButton page={page} setPage={setPage} pageName="link">⛓️ 링크</NavButton>
-                <NavButton page={page} setPage={setPage} pageName="emoji">👍 이모지</NavButton>
-                <NavButton page={page} setPage={setPage} pageName="bamboo">💬 대나무봇</NavButton>
-              </Nav>
-              <section>
-                {
-                  (() => {
-                    switch (page) {
-                      case 'link':
-                        return (<LinkList />);
-                      case 'emoji':
-                        return (<EmojiList />);
-                      case 'bamboo':
-                        return (<Bamboo />);
-                      default:
-                        return;
-                    }
-                  })()
-                }
-              </section>
-            </main>
-            <Footer>
-              <small>Copyright ©
-              <FooterLink href="https://github.com/tesseractjh">tesseractjh</FooterLink>. All Rights Reserved.</small>
-            </Footer>
-            {(modal.window || modal.register) && <Modal page={page} />}
-          </Container>
-        </ModalDispatch.Provider>
-      </EmojiDispatch.Provider>
-    </LinkDispatch.Provider>
+    <IdContext.Provider value={id}>
+      <LinkDispatch.Provider value={{ linkData, dispatchLink }}>
+        <EmojiDispatch.Provider value ={{ emojiData, dispatchEmoji }}>
+          <ModalDispatch.Provider value={{ modal, dispatchModal }}>
+            <Container>
+              <HomeHeader>게터디봇 관리페이지</HomeHeader>
+              <main>
+                <Nav>
+                  <NavButton page={page} setPage={setPage} pageName="link">⛓️ 링크</NavButton>
+                  <NavButton page={page} setPage={setPage} pageName="emoji">👍 이모지</NavButton>
+                  <NavButton page={page} setPage={setPage} pageName="bamboo">💬 대나무봇</NavButton>
+                </Nav>
+                <section>
+                  {
+                    (() => {
+                      switch (page) {
+                        case 'link':
+                          return (<LinkList />);
+                        case 'emoji':
+                          return (<EmojiList />);
+                        case 'bamboo':
+                          return (<Bamboo />);
+                        default:
+                          return;
+                      }
+                    })()
+                  }
+                </section>
+              </main>
+              <Footer>
+                <small>Copyright ©
+                <FooterLink href="https://github.com/tesseractjh">tesseractjh</FooterLink>. All Rights Reserved.</small>
+              </Footer>
+              {(modal.window || modal.register) && <Modal page={page} />}
+            </Container>
+          </ModalDispatch.Provider>
+        </EmojiDispatch.Provider>
+      </LinkDispatch.Provider>
+    </IdContext.Provider>
   );
 };
 

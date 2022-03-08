@@ -2,8 +2,7 @@ import styled from 'styled-components';
 import { customReq, resize } from '../util';
 import EnterIcon from '../assets/images/box-arrow-in-right.svg';
 import { useState, useCallback, useContext, useEffect, useRef } from 'react';
-import { ModalDispatch } from '../pages/Home';
-import { CH_NORMAL } from '../../../bot/constants';
+import { IdContext, ModalDispatch } from '../pages/Home';
 
 const BambooContainer = styled.section`
   position: relative;
@@ -81,6 +80,7 @@ const BambooFooter = styled.p`
 `;
 
 const Bamboo = () => {
+  const ID = useContext(IdContext);
   const { dispatchModal } = useContext(ModalDispatch);
   const [message, setMessage] = useState('');
   const [channelList, setChannelList] = useState([]);
@@ -122,7 +122,7 @@ const Bamboo = () => {
               <option
                 key={channel.id}
                 value={channel.id}
-                selected={channel.id === CH_NORMAL}
+                selected={channel.id === ID.NORMAL_CHANNEL}
               >
                 {channel.name}
               </option>
