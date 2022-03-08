@@ -3,6 +3,7 @@ import { customReq, resize } from '../util';
 import EnterIcon from '../assets/images/box-arrow-in-right.svg';
 import { useState, useCallback, useContext, useEffect, useRef } from 'react';
 import { IdContext, ModalDispatch } from '../pages/Home';
+import { GlobalContext } from '../App';
 
 const BambooContainer = styled.section`
   position: relative;
@@ -80,7 +81,7 @@ const BambooFooter = styled.p`
 `;
 
 const Bamboo = () => {
-  const ID = useContext(IdContext);
+  const CONTEXT = useContext(GlobalContext);
   const { dispatchModal } = useContext(ModalDispatch);
   const [message, setMessage] = useState('');
   const [channelList, setChannelList] = useState([]);
@@ -122,7 +123,7 @@ const Bamboo = () => {
               <option
                 key={channel.id}
                 value={channel.id}
-                selected={channel.id === ID.NORMAL_CHANNEL}
+                selected={channel.id === CONTEXT?.NORMAL_CHANNEL_ID}
               >
                 {channel.name}
               </option>

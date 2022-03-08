@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { GlobalContext } from '../App';
 import { auth } from '../util';
 import { HomeHeader } from './Home';
 
@@ -46,6 +47,7 @@ const Button = styled.button`
 
 const Auth = () => {
   const navigate = useNavigate();
+  const CONTEXT = useContext(GlobalContext);
   const [code, setCode] = useState('');
   const [checked, setChecked] = useState();
   useEffect(() => {
@@ -76,7 +78,7 @@ const Auth = () => {
       {
         checked &&
         <>
-          <HomeHeader>게터디봇 관리페이지</HomeHeader>
+          <HomeHeader>{CONTEXT?.BOT_NAME} 관리페이지</HomeHeader>
           <Form>
             <Label htmlFor="input">관리자 코드를 입력하세요</Label>
             <Input id="input" value={code} onChange={handleChange} />
