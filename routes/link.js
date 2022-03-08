@@ -11,7 +11,7 @@ router.get('/link', async (req, res) => {
 });
 
 router.get('/link/:keyword', async (req, res) => {
-  const { keyword } = req.params;
+  const { keyword } = req.query;
   const keywords = keyword.trim().split(/\s+/);
   const regex = new RegExp(keywords.map(word => `(?=.*${word})`).join(''));
   const data = await Link
