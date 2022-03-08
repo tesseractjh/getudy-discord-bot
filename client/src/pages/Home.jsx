@@ -124,7 +124,7 @@ const Home = () => {
         <EmojiDispatch.Provider value ={{ emojiData, dispatchEmoji }}>
           <ModalDispatch.Provider value={{ modal, dispatchModal }}>
             <Container>
-              <HomeHeader>게터디봇 관리페이지</HomeHeader>
+              <HomeHeader>{id?.BOT_NAME} 관리페이지</HomeHeader>
               <main>
                 <Nav>
                   <NavButton page={page} setPage={setPage} pageName="link">⛓️ 링크</NavButton>
