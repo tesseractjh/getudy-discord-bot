@@ -6,7 +6,7 @@ const linkRouter = require('./routes/link');
 const emojiRouter = require('./routes/emoji');
 const authRouter = require('./routes/auth');
 const messageRouter = require('./routes/message');
-const idRouter = require('./routes/id');
+const contextRouter = require('./routes/context');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -17,6 +17,7 @@ app.use(express.static(path.resolve(__dirname, './dist')));
 app.use(express.json());
 
 app.use('/api', authRouter);
+app.use('/api', contextRouter);
 
 app.use('/api', async (req, res, next) => {
   const { headers: { authentication } } = req;
@@ -30,7 +31,6 @@ app.use('/api', async (req, res, next) => {
 app.use('/api', linkRouter);
 app.use('/api', emojiRouter);
 app.use('/api', messageRouter);
-app.use('/api', idRouter);
 
 app.use('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './dist/index.html'));
