@@ -1,6 +1,6 @@
 const express = require('express');
 const Emoji = require('../bot/schemas/Emoji');
-const { refreshEmoji } = require('../botServer');
+const { refreshEmoji } = require('../bot/botServer');
 
 const router = express.Router();
 

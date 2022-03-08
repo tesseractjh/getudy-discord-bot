@@ -1,5 +1,5 @@
 const express = require('express');
-const { clientList } = require('../botServer');
+const { clientList } = require('../bot/botServer');
 const router = express.Router();
 
 router.get('/channel', (req, res) => {

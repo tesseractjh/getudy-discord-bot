@@ -1,13 +1,13 @@
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const { Client, Intents } = require('discord.js');
-const Emoji = require('./bot/schemas/Emoji');
-const reactEmoji = require('./bot/reactions/emoji');
-const collectLink = require('./bot/reactions/collectLink');
-const linkCommands = require('./bot/commands/link/command');
-const pickCommands = require('./bot/commands/pick/command');
-const ladderCommands = require('./bot/commands/ladder/command');
-const emojiCommands = require('./bot/commands/emoji/command');
+const Emoji = require('./schemas/Emoji');
+const reactEmoji = require('./reactions/emoji');
+const collectLink = require('./reactions/collectLink');
+const linkCommands = require('./commands/link/command');
+const pickCommands = require('./commands/pick/command');
+const ladderCommands = require('./commands/ladder/command');
+const emojiCommands = require('./commands/emoji/command');
 
 let emojiRules = [];
 const clientList = [];
