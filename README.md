@@ -13,7 +13,7 @@
 
 🤖 테스트 관리자 페이지 링크: https://getudy-bot-test.herokuapp.com/admin
 
-관리자 코드: BC19D3B3C9E45818C670965F21E9A65E2CB6EF2B91265DBB4BAA82124977A58D
+관리자 코드: admin123
 
 ## 🔧 기술 스택
 
