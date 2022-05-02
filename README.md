@@ -11,7 +11,7 @@
 
 🤖 테스트 디스코드 링크: https://discord.gg/aF8BwzZtzE
 
-🤖 테스트 관리자 페이지 링크: https://getudy-bot-test.herokuapp.com/admin
+🤖 테스트 관리자 페이지 링크: https://getudy-bot-test.herokuapp.com/
 
 관리자 코드: admin123
 
