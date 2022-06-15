@@ -47,6 +47,16 @@ const Button = styled.button`
   }
 `;
 
+const debounce = (callback, delay) => {
+  let timer;
+  return (e) => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(callback, delay, e);
+  };
+};
+
 const SearchInput = React.memo(({ page }) => {
   let dispatch;
   switch (page) {
@@ -58,11 +68,14 @@ const SearchInput = React.memo(({ page }) => {
       break;
   }
   const [value, setValue] = useState('');
-  const handleChange = useCallback(e => {
-    setValue(e.target.value);
+  const fetchData = debounce((e) => {
     fetch(`/api/${page}/search?keyword=${encodeURIComponent(e.target.value)}`, customReq())
       .then(res => res.json())
       .then(json => dispatch({ type: 'GET', json }));
+  }, 300);
+  const handleChange = useCallback(e => {
+    setValue(e.target.value);
+    fetchData(e);
   }, []);
   return (<Input id="search" value={value} onChange={handleChange} />);
 });
